@@ -15,13 +15,13 @@
 class TubularPolygon:public FramedFace
 {
 private:
-    Vector getFaceNormal(double magnitude) const;
-    virtual std::vector<Triangle> generateTriangles(double frameWidth);
-    virtual std::vector<std::pair<Triangle, int>> do_generateTriangleEdgePairs(double frameWidth);
+    //Vector getFaceNormal(double magnitude) const;
+    virtual std::vector<Triangle> generateTriangles(double frameWidth,const VertexVector& vertices);
+    virtual std::vector<std::pair<Triangle, int>> do_generateTriangleEdgePairs(double frameWidth,const VertexVector& vertices,const EdgeVector& edges);
     virtual TubularPolygon* doClone();
-    virtual double do_calculateMaxWidth() const;
+    virtual double do_calculateMaxWidth(const VertexVector& vertices) const;
 public:
-    TubularPolygon(const EdgeVector& e,const FaceVertices& pr);
+    TubularPolygon();
     
 };
 

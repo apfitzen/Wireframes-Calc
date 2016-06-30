@@ -7,13 +7,12 @@
 //
 
 #include "NonFramedFace.h"
-#include "FaceVertices.h"
 
-NonFramedFace::NonFramedFace(const EdgeVector& e,const FaceVertices& pr):FaceGenerator(e,pr)
+NonFramedFace::NonFramedFace():FaceGenerator()
 {
     
 }
-std::vector<Triangle> NonFramedFace::generateTriangles(double frameWidth)
+std::vector<Triangle> NonFramedFace::generateTriangles(double frameWidth,const VertexVector& vertices)
 {
     return std::vector<Triangle>(0);
 }
@@ -21,11 +20,11 @@ NonFramedFace* NonFramedFace::doClone()
 {
     return new NonFramedFace(*this);
 }
-std::vector<std::pair<Triangle, int>> NonFramedFace::do_generateTriangleEdgePairs(double frameWidth)
+std::vector<std::pair<Triangle, int>> NonFramedFace::do_generateTriangleEdgePairs(double frameWidth,const VertexVector& vertices,const EdgeVector& edges)
 {
     return std::vector<std::pair<Triangle, int>>(0);
 }
-double NonFramedFace::do_calculateMaxWidth() const
+double NonFramedFace::do_calculateMaxWidth(const VertexVector& vertices) const
 {
     return 1000000.0;
 }

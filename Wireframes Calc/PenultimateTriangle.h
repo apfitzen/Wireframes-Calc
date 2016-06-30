@@ -18,18 +18,18 @@ class Triangle;
 class PenultimateTriangle:public FaceGenerator
 { //use with equilateral triangles only
 private:
-    bool verifyFaceIsTriangle();
+    bool verifyFaceIsTriangle(const VertexVector& vertices,std::string message) const;
     
     virtual PenultimateTriangle* doClone();
-    virtual std::vector<Triangle> generateTriangles(double frameWidth);
-    virtual std::vector<std::pair<Triangle, int>> do_generateTriangleEdgePairs(double frameWidth);
-    virtual double do_calculateMaxWidth() const;
+    virtual std::vector<Triangle> generateTriangles(double frameWidth,const VertexVector& vertices);
+    virtual std::vector<std::pair<Triangle, int>> do_generateTriangleEdgePairs(double frameWidth,const VertexVector& vertices,const EdgeVector& edges);
+    virtual double do_calculateMaxWidth(const VertexVector& vertices) const;
     
     std::vector<Point> inners;
-    void generateInnerPoints(double frameWidth);
-    std::vector<Triangle> connectInnerPoints();
+    void generateInnerPoints(double frameWidth,const VertexVector& vertices);
+    std::vector<Triangle> connectInnerPoints(const VertexVector& vertices);
 public:
-    PenultimateTriangle(const EdgeVector& e,const FaceVertices& pr);
+    PenultimateTriangle();
 };
 
 #endif /* defined(__Wireframes_Calc_4__PenultimateTriangle__) */

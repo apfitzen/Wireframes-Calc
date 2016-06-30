@@ -15,13 +15,14 @@
 class DihedralFace:public FramedFace
 {
 private:
-    void addDihedral(double frameWidth);
-    virtual std::vector<Triangle> generateTriangles(double frameWidth);
-    virtual std::vector<std::pair<Triangle, int>> do_generateTriangleEdgePairs(double frameWidth);
+    void addDihedral(double frameWidth,const VertexVector& vertices);
+    virtual std::vector<Triangle> generateTriangles(double frameWidth,const VertexVector& vertices);
+    virtual std::vector<std::pair<Triangle, int>> do_generateTriangleEdgePairs(double frameWidth,const VertexVector& vertices,const EdgeVector& edges);
     virtual DihedralFace* doClone();
-    virtual double do_calculateMaxWidth() const;
+    virtual double do_calculateMaxWidth(const VertexVector& vertices) const;
 public:
-    DihedralFace(const EdgeVector& e,const FaceVertices& pr);
+    DihedralFace();
 };
+
 
 #endif /* defined(__Wireframes_Calc_4__DihedralFace__) */

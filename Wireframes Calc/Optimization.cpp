@@ -70,6 +70,8 @@ double computeCompoundWidth(const Compound& compound,double edgeDistCheckFactor)
     //t = clock() - t;
     //count+=t;
     
+    //std::cout << upperBound << " " << lowerBound << "\n";
+    
     int index=-1;
     double currentFrameWidth=upperBound;
     for (int i=0;i<polyNum;i++)

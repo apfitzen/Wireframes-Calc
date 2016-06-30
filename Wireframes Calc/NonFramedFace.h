@@ -15,12 +15,12 @@
 class NonFramedFace:public FaceGenerator
 {
 private:
-    virtual std::vector<Triangle> generateTriangles(double frameWidth);
+    virtual std::vector<Triangle> generateTriangles(double frameWidth,const VertexVector& vertices);
     virtual NonFramedFace* doClone();
-    virtual std::vector<std::pair<Triangle, int>> do_generateTriangleEdgePairs(double frameWidth);
-    virtual double do_calculateMaxWidth() const;
+    virtual std::vector<std::pair<Triangle, int>> do_generateTriangleEdgePairs(double frameWidth,const VertexVector& vertices,const EdgeVector& edges);
+    virtual double do_calculateMaxWidth(const VertexVector& vertices) const;
 public:
-    NonFramedFace(const EdgeVector& e,const FaceVertices& pr);
+    NonFramedFace();
 };
 
 #endif /* defined(__Wireframes_Calc_4__NonFramedFace__) */

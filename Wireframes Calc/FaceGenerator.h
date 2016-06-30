@@ -11,39 +11,34 @@
 
 #include <vector>
 #include <map>
-#include "FaceVertices.h"
 
-class Point;
-class Vertex;
-class Triangle;
+#include "basicshapes.h"
 
 typedef std::vector<int> EdgeVector;
+typedef std::vector<Point> VertexVector;
 
 class FaceGenerator
 {
 private:
-    FaceVertices vertices;
-    
     virtual FaceGenerator* doClone()=0;
-    virtual std::vector<Triangle> generateTriangles(double frameWidth)=0;
-    virtual std::vector<std::pair<Triangle, int>> do_generateTriangleEdgePairs(double frameWidth)=0;
-    virtual double do_calculateMaxWidth() const=0;
+    virtual std::vector<Triangle> generateTriangles(double frameWidth,const VertexVector& vertices)=0;
+    virtual std::vector<std::pair<Triangle, int>> do_generateTriangleEdgePairs(double frameWidth,const VertexVector& vertices,const EdgeVector& edges)=0;
+    virtual double do_calculateMaxWidth(const VertexVector& vertices) const=0;
+    
+    bool areVerticesAndEdgesEqualLength(const VertexVector& vertices,const EdgeVector& edges,std::string message) const;
 protected:
     std::map<std::string,double> attributes;
-    EdgeVector edges;
     
-    Point getVertex(int index) const;
-    
-    FaceGenerator(const EdgeVector& e,const FaceVertices& pr);
+    FaceGenerator();
 public:
-    FaceGenerator* clone(const FaceVertices& fv);
-
+    FaceGenerator* clone();
+    
     void setAttribute(std::string name,double value);
     double getAttribute(std::string name);
     
-    std::vector<Triangle> generateTrianglesList(double frameWidth);
-    std::vector<std::pair<Triangle, int>> generateTriangleEdgePairs(double frameWidth);
-    double calculateMaxWidth() const;
+    std::vector<Triangle> generateTrianglesList(double frameWidth,const VertexVector& vertices);
+    std::vector<std::pair<Triangle, int>> generateTriangleEdgePairs(double frameWidth,const VertexVector& vertices,const EdgeVector& edges);
+    double calculateMaxWidth(const VertexVector& vertices) const;
     virtual ~FaceGenerator();
 };
 

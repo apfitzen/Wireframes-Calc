@@ -10,11 +10,11 @@
 #include "basicshapes.h"
 #include "AffineTransformation.h"
 
-TubularPolygon::TubularPolygon(const EdgeVector& e,const FaceVertices& pr):FramedFace(e,pr)
+TubularPolygon::TubularPolygon():FramedFace()
 {
     
 }
-Vector TubularPolygon::getFaceNormal(double magnitude) const
+/*Vector TubularPolygon::getFaceNormal(double magnitude) const
 {
     Point v1=getVertex(0);
     Point v2=getVertex(1);
@@ -24,16 +24,18 @@ Vector TubularPolygon::getFaceNormal(double magnitude) const
     normal.normalize();
     normal*=magnitude;
     return normal;
-}
+}*/
 
-std::vector<std::pair<Triangle, int>> TubularPolygon::do_generateTriangleEdgePairs(double frameWidth)
+std::vector<std::pair<Triangle, int>> TubularPolygon::do_generateTriangleEdgePairs(double frameWidth,const VertexVector& vertices,const EdgeVector& edges)
 {
-    generateInnerPoints(frameWidth);
-    std::vector<std::pair<Triangle, int>> flatFacePairs=makeTriangleEdgePairs(frameWidth);
+    generateInnerPoints(frameWidth,vertices);
+    std::vector<std::pair<Triangle, int>> flatFacePairs=makeTriangleEdgePairs(frameWidth,vertices,edges);
     std::vector<std::pair<Triangle, int>> tubularPairs;
     int faceSize=(int) edges.size();
     tubularPairs.reserve(4*faceSize);
-    Vector shift=getFaceNormal(frameWidth/2.0);
+    
+    Vector shift=Plane::planeThroughPoints(vertices.at(0), vertices.at(1), vertices.at(2)).getNormalVector().getUnitVector()*frameWidth/2.0;
+    
     AffineTransformation upShift(shift);
     AffineTransformation downShift(shift*-1.0);
     for (int i=0;i<flatFacePairs.size();i++) //shift triangles up and down
@@ -50,8 +52,8 @@ std::vector<std::pair<Triangle, int>> TubularPolygon::do_generateTriangleEdgePai
         int index2=(i+1)%faceSize;
         int edgeIndex=edges.at(i);
         
-        Point v1=getVertex(index1);
-        Point v2=getVertex(index2);
+        Point v1=vertices.at(index1);
+        Point v2=vertices.at(index2);
         Point v1up=upShift.transform(v1);
         Point v2up=upShift.transform(v2);
         Point v1down=downShift.transform(v1);
@@ -64,14 +66,17 @@ std::vector<std::pair<Triangle, int>> TubularPolygon::do_generateTriangleEdgePai
     }
     return tubularPairs;
 }
-std::vector<Triangle> TubularPolygon::generateTriangles(double frameWidth)
+std::vector<Triangle> TubularPolygon::generateTriangles(double frameWidth,const VertexVector& vertices)
 {
-    generateInnerPoints(frameWidth);
-    std::vector<Triangle> flatFaceTriangles=connectInnerPoints();
+    generateInnerPoints(frameWidth,vertices);
+    std::vector<Triangle> flatFaceTriangles=connectInnerPoints(vertices);
     std::vector<Triangle> tubularTriangles;
-    int faceSize=(int) edges.size();
+    int faceSize=(int) vertices.size();
     tubularTriangles.reserve(4*faceSize);
-    Vector shift=getFaceNormal(frameWidth/2.0);
+    
+    //Vector shift=getFaceNormal(frameWidth/2.0);
+    Vector shift=Plane::planeThroughPoints(vertices.at(0), vertices.at(1), vertices.at(2)).getNormalVector().getUnitVector()*frameWidth/2.0;
+    
     AffineTransformation upShift(shift);
     AffineTransformation downShift(shift*-1.0);
     for (int i=0;i<flatFaceTriangles.size();i++) //shift triangles up and down
@@ -86,8 +91,8 @@ std::vector<Triangle> TubularPolygon::generateTriangles(double frameWidth)
         int index1=(i)%faceSize;
         int index2=(i+1)%faceSize;
         
-        Point v1=getVertex(index1);
-        Point v2=getVertex(index2);
+        Point v1=vertices.at(index1);
+        Point v2=vertices.at(index2);
         Point v1up=upShift.transform(v1);
         Point v2up=upShift.transform(v2);
         Point v1down=downShift.transform(v1);
@@ -100,9 +105,9 @@ std::vector<Triangle> TubularPolygon::generateTriangles(double frameWidth)
     }
     return tubularTriangles;
 }
-double TubularPolygon::do_calculateMaxWidth() const
+double TubularPolygon::do_calculateMaxWidth(const VertexVector& vertices) const
 {
-    return FramedFace::do_calculateMaxWidth();
+    return FramedFace::do_calculateMaxWidth(vertices);
 }
 TubularPolygon* TubularPolygon::doClone()
 {

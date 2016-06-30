@@ -15,18 +15,18 @@
 class FramedFace:public FaceGenerator
 {
 private:
-    virtual std::vector<Triangle> generateTriangles(double frameWidth);
+    virtual std::vector<Triangle> generateTriangles(double frameWidth,const VertexVector& vertices);
     virtual FramedFace* doClone();
-    virtual std::vector<std::pair<Triangle, int>> do_generateTriangleEdgePairs(double frameWidth);
+    virtual std::vector<std::pair<Triangle, int>> do_generateTriangleEdgePairs(double frameWidth,const VertexVector& vertices,const EdgeVector& edges);
 protected:
     std::vector<Point> inners; //inner points on edges, index corresponds to the index of corresponding vertex
     
-    void generateInnerPoints(double frameWidth);
-    std::vector<Triangle> connectInnerPoints();
-    std::vector<std::pair<Triangle, int>> makeTriangleEdgePairs(double frameWidth);
-    virtual double do_calculateMaxWidth() const;
+    void generateInnerPoints(double frameWidth,const VertexVector& vertices);
+    std::vector<Triangle> connectInnerPoints(const VertexVector& vertices);
+    std::vector<std::pair<Triangle, int>> makeTriangleEdgePairs(double frameWidth,const VertexVector& vertices,const EdgeVector& edges);
+    virtual double do_calculateMaxWidth(const VertexVector& vertices) const;
 public:
-    FramedFace(const EdgeVector& e,const FaceVertices& pr);
+    FramedFace();
     virtual ~FramedFace();
 };
 

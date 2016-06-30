@@ -10,22 +10,19 @@
 
 #include "FramedFace.h"
 #include "basicshapes.h"
-#include "Vertex.h"
-#include "PovFileGenerator.h"
-#include "FaceVertices.h"
 
 FramedFace::~FramedFace()
 {
     
 }
 
-FramedFace::FramedFace(const EdgeVector& e,const FaceVertices& pr):FaceGenerator(e,pr)
+FramedFace::FramedFace():FaceGenerator()
 {
     
 }
-std::vector<Triangle> FramedFace::connectInnerPoints()
+std::vector<Triangle> FramedFace::connectInnerPoints(const VertexVector& vertices)
 {
-    int faceSize=(int) edges.size();
+    int faceSize=(int) inners.size();
     std::vector<Triangle> generatedTriangles;
     generatedTriangles.reserve(2*faceSize);
     for (int i=0;i<faceSize;i++)
@@ -33,15 +30,15 @@ std::vector<Triangle> FramedFace::connectInnerPoints()
         int index1=(i)%faceSize;
         int index2=(i+1)%faceSize;
         
-        Point v1=getVertex(index1);
-        Point v2=getVertex(index2);
+        Point v1=vertices.at(index1);
+        Point v2=vertices.at(index2);
         
         generatedTriangles.push_back( Triangle(v1,inners.at(index2),inners.at(index1)) );
         generatedTriangles.push_back( Triangle(v1,v2,inners.at(index2)) );
     }
     return generatedTriangles;
 }
-std::vector<std::pair<Triangle, int>> FramedFace::makeTriangleEdgePairs(double frameWidth)
+std::vector<std::pair<Triangle, int>> FramedFace::makeTriangleEdgePairs(double frameWidth,const VertexVector& vertices,const EdgeVector& edges)
 {
     int faceSize=(int) edges.size();
     std::vector<std::pair<Triangle, int>> pairs;
@@ -52,32 +49,32 @@ std::vector<std::pair<Triangle, int>> FramedFace::makeTriangleEdgePairs(double f
         int index2=(i+1)%faceSize;
         int edgeIndex=edges.at(i);
         
-        Point v1=getVertex(index1);
-        Point v2=getVertex(index2);
+        Point v1=vertices.at(index1);
+        Point v2=vertices.at(index2);
         
         pairs.push_back( std::pair<Triangle,int>( Triangle(v1,inners.at(index2),inners.at(index1)) , edgeIndex) );
         pairs.push_back( std::pair<Triangle,int>( Triangle(v1,v2,inners.at(index2)) , edgeIndex) );
     }
     return pairs;
 }
-std::vector<Triangle> FramedFace::generateTriangles(double frameWidth)
+std::vector<Triangle> FramedFace::generateTriangles(double frameWidth,const VertexVector& vertices)
 {
-    generateInnerPoints(frameWidth);
-    return connectInnerPoints();
+    generateInnerPoints(frameWidth,vertices);
+    return connectInnerPoints(vertices);
 }
-std::vector<std::pair<Triangle, int>> FramedFace::do_generateTriangleEdgePairs(double frameWidth)
+std::vector<std::pair<Triangle, int>> FramedFace::do_generateTriangleEdgePairs(double frameWidth,const VertexVector& vertices,const EdgeVector& edges)
 {
-    generateInnerPoints(frameWidth);
-    return makeTriangleEdgePairs(frameWidth);
+    generateInnerPoints(frameWidth,vertices);
+    return makeTriangleEdgePairs(frameWidth,vertices,edges);
 }
-void FramedFace::generateInnerPoints(double frameWidth)
+void FramedFace::generateInnerPoints(double frameWidth,const VertexVector& vertices)
 {
-    int faceSize=(int) edges.size();
+    int faceSize=(int) vertices.size();
     inners.resize(faceSize);
     
     Point bisector;
     double angle,factor;
-
+    
     for (int i=0;i<faceSize;i++)
     {
         int index1=(i-1)%faceSize;
@@ -86,9 +83,9 @@ void FramedFace::generateInnerPoints(double frameWidth)
         
         if (index1==-1) { index1=faceSize-1; }
         
-        Point v1=getVertex(index1);
-        Point v2=getVertex(index2);
-        Point v3=getVertex(index3);
+        Point v1=vertices.at(index1);
+        Point v2=vertices.at(index2);
+        Point v3=vertices.at(index3);
         
         bisector=Point::angleBisector(v1, v2, v3);
         angle=Point::angleMeasure(v1, v2, v3)/2.0;
@@ -97,10 +94,10 @@ void FramedFace::generateInnerPoints(double frameWidth)
         inners.at(i)=Point::extendLine(v2, bisector, factor);
     }
 }
-double FramedFace::do_calculateMaxWidth() const
+double FramedFace::do_calculateMaxWidth(const VertexVector& vertices) const
 {
     double maxHeight=1000000.0;
-    int vertexNum=(int) edges.size();
+    int vertexNum=(int) vertices.size();
     for (int i=0;i<vertexNum;i++)
     {
         int a1=i;   //verticies for 1st angle
@@ -117,15 +114,15 @@ double FramedFace::do_calculateMaxWidth() const
         b2%=vertexNum;
         b3%=vertexNum;
         
-        double angle1=Point::angleMeasure(getVertex(a1), getVertex(a2), getVertex(a3))/2.0; //1st angle measure
-        double angle2=Point::angleMeasure(getVertex(b1), getVertex(b2), getVertex(b3))/2.0; //2nd angle measure
-        double edgeLength=Point::distance(getVertex(a2), getVertex(b2));
+        double angle1=Point::angleMeasure(vertices.at(a1), vertices.at(a2), vertices.at(a3))/2.0; //1st angle measure
+        double angle2=Point::angleMeasure(vertices.at(b1), vertices.at(b2), vertices.at(b3))/2.0; //2nd angle measure
+        double edgeLength=Point::distance(vertices.at(a2), vertices.at(b2));
         
         double heightForEdge=edgeLength/(1.0/tan(angle1)+1.0/tan(angle2));
         /*if (heightForEdge<maxHeight)
-        {
-            maxHeight=heightForEdge;
-        }*/
+         {
+         maxHeight=heightForEdge;
+         }*/
         maxHeight=fmin(heightForEdge,maxHeight);
     }
     return maxHeight;

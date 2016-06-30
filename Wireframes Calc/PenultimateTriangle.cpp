@@ -9,22 +9,20 @@
 #include <cmath>
 
 #include "PenultimateTriangle.h"
-#include "Face.h"
 #include "basicshapes.h"
-#include "FaceVertices.h"
 
-PenultimateTriangle::PenultimateTriangle(const EdgeVector& e,const FaceVertices& pr):FaceGenerator(e,pr)
+PenultimateTriangle::PenultimateTriangle():FaceGenerator()
 {
     attributes["ttt"]=1.0;
     attributes["nnn"]=-1.0;
     
     inners.resize(3);
 }
-bool PenultimateTriangle::verifyFaceIsTriangle()
+bool PenultimateTriangle::verifyFaceIsTriangle(const VertexVector& vertices,std::string message) const
 {
-    if (edges.size()!=3)
+    if (vertices.size()!=3)
     {
-        std::cout << "PenultimateTriangle::Face must have exactly three vertices." << "\n";
+        std::cout << "Error: PenultimateTriangle::" << message << " must have exactly three vertices." << "\n";
         return false;
     }
     else
@@ -32,12 +30,12 @@ bool PenultimateTriangle::verifyFaceIsTriangle()
         return true;
     }
 }
-std::vector<Triangle> PenultimateTriangle::connectInnerPoints()
+std::vector<Triangle> PenultimateTriangle::connectInnerPoints(const VertexVector& vertices)
 {
     std::vector<Triangle> triangles(3);
-    Point p1=getVertex(0);
-    Point p2=getVertex(1);
-    Point p3=getVertex(2);
+    Point p1=vertices.at(0);
+    Point p2=vertices.at(1);
+    Point p3=vertices.at(2);
     
     Point fp1=inners.at(0);
     Point fp2=inners.at(1);
@@ -62,23 +60,19 @@ std::vector<Triangle> PenultimateTriangle::connectInnerPoints()
     return triangles;
 }
 
-std::vector<Triangle> PenultimateTriangle::generateTriangles(double frameWidth)
+std::vector<Triangle> PenultimateTriangle::generateTriangles(double frameWidth,const VertexVector& vertices)
 {
-    generateInnerPoints(frameWidth);
-    return connectInnerPoints();
+    if (!verifyFaceIsTriangle(vertices,"generateTriangles")) {return std::vector<Triangle>(0);}
+    generateInnerPoints(frameWidth,vertices);
+    return connectInnerPoints(vertices);
 }
 
-std::vector<std::pair<Triangle, int>> PenultimateTriangle::do_generateTriangleEdgePairs(double frameWidth)
+std::vector<std::pair<Triangle, int>> PenultimateTriangle::do_generateTriangleEdgePairs(double frameWidth,const VertexVector& vertices,const EdgeVector& edges)
 {
-    if (edges.size()!=3)
-    {
-        std::cout << "PenultimateTriangle::Face must have exactly 3 edges." << "\n";
-        return std::vector<std::pair<Triangle, int>>();
-    }
+    if (!verifyFaceIsTriangle(vertices,"do_generateTriangleEdgePairs")) {return std::vector<std::pair<Triangle, int>>();}
     
-    //std::vector<Point> verticess=FaceGenerator::pointsFromEdgePairVector(pointedges);
-    generateInnerPoints(frameWidth);
-    std::vector<Triangle> triangles=connectInnerPoints();
+    generateInnerPoints(frameWidth,vertices);
+    std::vector<Triangle> triangles=connectInnerPoints(vertices);
     
     std::vector<std::pair<Triangle, int>> pairs;
     for (int i=0;i<triangles.size();i++)
@@ -89,11 +83,11 @@ std::vector<std::pair<Triangle, int>> PenultimateTriangle::do_generateTriangleEd
     return pairs;
 }
 
-void PenultimateTriangle::generateInnerPoints(double frameWidth)
+void PenultimateTriangle::generateInnerPoints(double frameWidth,const VertexVector& vertices)
 {
-    Point p1=getVertex(0);
-    Point p2=getVertex(1);
-    Point p3=getVertex(2);
+    Point p1=vertices.at(0);
+    Point p2=vertices.at(1);
+    Point p3=vertices.at(2);
     double theta=frameWidth;
     double nnn=attributes.at("nnn");
     
@@ -128,7 +122,7 @@ void PenultimateTriangle::generateInnerPoints(double frameWidth)
     inners.at(2)=np3;
 }
 
-double PenultimateTriangle::do_calculateMaxWidth() const
+double PenultimateTriangle::do_calculateMaxWidth(const VertexVector& vertices) const
 {
     return 30.0;
 }

@@ -9,31 +9,40 @@
 #include <vector>
 
 #include "FaceGenerator.h"
-#include "Vertex.h"
 #include "Utilities.h"
-#include "FaceVertices.h"
 
 FaceGenerator::~FaceGenerator()
 {
     
 }
-FaceGenerator::FaceGenerator(const EdgeVector& e,const FaceVertices& pr):vertices(pr),edges(e)
+FaceGenerator::FaceGenerator()
 {
-
+    
 }
-
-std::vector<Triangle> FaceGenerator::generateTrianglesList(double frameWidth)
+bool FaceGenerator::areVerticesAndEdgesEqualLength(const VertexVector& vertices,const EdgeVector& edges,std::string message) const
 {
-    //updateVertexPointer(values);
-    return generateTriangles(frameWidth);
+    if (vertices.size()==edges.size())
+    {
+        return true;
+    }
+    else
+    {
+        std::cout << "Error: FaceGenerator::" << message << " called with vertices vector size != edge vector size" << "\n";
+        return false;
+    }
 }
-std::vector<std::pair<Triangle, int>> FaceGenerator::generateTriangleEdgePairs(double frameWidth)
+std::vector<Triangle> FaceGenerator::generateTrianglesList(double frameWidth,const VertexVector& vertices)
 {
-    return do_generateTriangleEdgePairs(frameWidth);
+    return generateTriangles(frameWidth,vertices);
 }
-double FaceGenerator::calculateMaxWidth() const
+std::vector<std::pair<Triangle, int>> FaceGenerator::generateTriangleEdgePairs(double frameWidth,const VertexVector& vertices,const EdgeVector& edges)
 {
-    return do_calculateMaxWidth();
+    if (!areVerticesAndEdgesEqualLength(vertices,edges,"generateTriangleEdgePairs")) {return std::vector<std::pair<Triangle, int>>();}
+    return do_generateTriangleEdgePairs(frameWidth,vertices,edges);
+}
+double FaceGenerator::calculateMaxWidth(const VertexVector& vertices) const
+{
+    return do_calculateMaxWidth(vertices);
 }
 
 void FaceGenerator::setAttribute(std::string name,double value)
@@ -44,14 +53,9 @@ double FaceGenerator::getAttribute(std::string name)
 {
     return attributes.at(name);
 }
-Point FaceGenerator::getVertex(int index) const
-{
-    return vertices.getVertexValue(index);
-}
 
-FaceGenerator* FaceGenerator::clone(const FaceVertices& fv)
+FaceGenerator* FaceGenerator::clone()
 {
     FaceGenerator* newFace=doClone();
-    newFace->vertices=fv;
     return newFace;
 }

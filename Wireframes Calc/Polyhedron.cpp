@@ -28,7 +28,7 @@ Polyhedron::Polyhedron(const Polyhedron& source):vertices(source.vertices),struc
     {
         std::vector<int> newFacePoints=structure.getFace(index).getVertices();
         FaceVertices fv(this,newFacePoints);
-        faces.push_back(std::unique_ptr<FaceGenerator>( (*it)->clone(fv) ));
+        faces.push_back(std::unique_ptr<FaceGenerator>( (*it)->clone() ));
         
         index++;
     }
@@ -50,7 +50,7 @@ Polyhedron& Polyhedron::operator=(const Polyhedron& source)
         {
             std::vector<int> newFacePoints=structure.getFace(index).getVertices();
             FaceVertices fv(this,newFacePoints);
-            faces.push_back(std::unique_ptr<FaceGenerator>( (*it)->clone(fv) ));
+            faces.push_back(std::unique_ptr<FaceGenerator>( (*it)->clone() ));
             
             index++;
         }
@@ -86,7 +86,7 @@ double Polyhedron::calculateMaxFrameWidth() const
     int faceSize=(int) faces.size();
     for (int i=0;i<faceSize;i++)
     {
-        maxWidth=fmin(maxWidth,faces.at(i)->calculateMaxWidth());
+        maxWidth=fmin(maxWidth,faces.at(i)->calculateMaxWidth(getFaceVertices(i)));
     }
     return maxWidth;
 }
@@ -108,7 +108,7 @@ Frame Polyhedron::makeFrame(double frameWidth) const
     
     for (int i=0;i<faces.size();i++)
     {
-        auto pairs=faces.at(i)->generateTriangleEdgePairs(frameWidth);
+        auto pairs=faces.at(i)->generateTriangleEdgePairs(frameWidth,getFaceVertices(i),structure.getFace(i).getEdges());
         for (int j=0;j<pairs.size();j++)
         {
             auto pair=pairs.at(j);
@@ -128,11 +128,11 @@ FrameEdge Polyhedron::makeFrameEdge(int edgeID,double frameWidth) const
     
     Line edgeLine=getEdgeLine(edgeID);
     FrameEdge fe(edgeLine);
-    
     std::vector<int> adjacentFaces=structure.getEdge(edgeID).getAdjacentFaces();
     for (int i=0;i<adjacentFaces.size();i++)
     {
-        auto pairs=faces.at(adjacentFaces.at(i))->generateTriangleEdgePairs(frameWidth);
+        int faceIndex=adjacentFaces.at(i);
+        auto pairs=faces.at(faceIndex)->generateTriangleEdgePairs(frameWidth,getFaceVertices(faceIndex),structure.getFace(faceIndex).getEdges());
         for (int j=0;j<pairs.size();j++)
         {
             auto pair=pairs.at(j);

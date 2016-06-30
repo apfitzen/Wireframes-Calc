@@ -355,8 +355,8 @@
 				9320614E1D24B8B10072730A /* DihedralFace.h */,
 				932061091D24B8B00072730A /* TubularPolygon.cpp */,
 				9320610A1D24B8B00072730A /* TubularPolygon.h */,
-				9320614F1D24B8B10072730A /* NonFramedFace.h */,
 				932061501D24B8B10072730A /* NonFramedFace.cpp */,
+				9320614F1D24B8B10072730A /* NonFramedFace.h */,
 				9320614B1D24B8B10072730A /* PenultimateTriangle.cpp */,
 				932061521D24B8B10072730A /* PenultimateTriangle.h */,
 			);

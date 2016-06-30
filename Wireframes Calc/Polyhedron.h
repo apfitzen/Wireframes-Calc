@@ -107,11 +107,11 @@ void Polyhedron::addFace(const std::vector<int>& points)
     else
     {
         structure.addFace(points);
-        int newFaceIndex=(int) faces.size();
-        std::vector<int> newFaceEdges=structure.getFace(newFaceIndex).getEdges();
-        std::vector<int> newFacePoints=structure.getFace(newFaceIndex).getVertices();
-        FaceVertices pr(this,newFacePoints);
-        faces.push_back( std::unique_ptr<FaceGenerator>(new FaceType(newFaceEdges,pr)));
+        //int newFaceIndex=(int) faces.size();
+        //std::vector<int> newFaceEdges=structure.getFace(newFaceIndex).getEdges();
+        //std::vector<int> newFacePoints=structure.getFace(newFaceIndex).getVertices();
+        //FaceVertices pr(this,newFacePoints);
+        faces.push_back( std::unique_ptr<FaceGenerator>(new FaceType()));
     }
 }
 
