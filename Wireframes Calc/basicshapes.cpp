@@ -424,6 +424,11 @@ void Vector::normalize()
     y/=n;
     z/=n;
 }
+Vector Vector::getUnitVector() const
+{
+    double n=norm();
+    return Vector(x/n,y/n,z/n);
+}
 
 double Vector::dot(const Vector& u,const Vector& v)
 {

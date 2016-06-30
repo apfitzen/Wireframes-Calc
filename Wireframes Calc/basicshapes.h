@@ -90,6 +90,7 @@ public:
     void setAll(double xx,double yy,double zz); //sets all values of the vector
     void rotate(double xrot,double yrot,double zrot); //rotates the vector around the x, y, and z axes, in degrees
     void normalize();
+    Vector getUnitVector() const; //return unit vector in the direction of the vector
     
     static double dot(const Vector& u,const Vector& v); //dot procduct
     static Vector cross(const Vector& u,const Vector& v); //cross product

@@ -8,78 +8,70 @@
 
 #include "Matrix3x3.h"
 #include <iostream>
+#include <cmath>
 #include "basicshapes.h"
+#include "Utilities.h"
 
 Matrix3x3::Matrix3x3(double aa,double bb,double cc,
                      double dd,double ee,double ff,
                      double gg,double hh,double ii)
 {
-    a=aa;
-    b=bb;
-    c=cc;
-    d=dd;
-    e=ee;
-    f=ff;
-    g=gg;
-    h=hh;
-    i=ii;
+    matrixArray[0][0]=aa;
+    matrixArray[0][1]=bb;
+    matrixArray[0][2]=cc;
     
-    matrixArray[0][0]=a;
-    matrixArray[0][1]=b;
-    matrixArray[0][2]=c;
+    matrixArray[1][0]=dd;
+    matrixArray[1][1]=ee;
+    matrixArray[1][2]=ff;
     
-    matrixArray[1][0]=d;
-    matrixArray[1][1]=e;
-    matrixArray[1][2]=f;
-    
-    matrixArray[2][0]=g;
-    matrixArray[2][1]=h;
-    matrixArray[2][2]=i;
+    matrixArray[2][0]=gg;
+    matrixArray[2][1]=hh;
+    matrixArray[2][2]=ii;
 }
 Matrix3x3::Matrix3x3(const Vector& v1,const Vector& v2,const Vector& v3)
 {
-    a=v1.getX();
-    b=v2.getX();
-    c=v3.getX();
-    d=v1.getY();
-    e=v2.getY();
-    f=v3.getY();
-    g=v1.getZ();
-    h=v2.getZ();
-    i=v3.getZ();
+    matrixArray[0][0]=v1.getX();
+    matrixArray[0][1]=v2.getX();
+    matrixArray[0][2]=v3.getX();
     
-    matrixArray[0][0]=a;
-    matrixArray[0][1]=b;
-    matrixArray[0][2]=c;
+    matrixArray[1][0]=v1.getY();
+    matrixArray[1][1]=v2.getY();
+    matrixArray[1][2]=v3.getY();
     
-    matrixArray[1][0]=d;
-    matrixArray[1][1]=e;
-    matrixArray[1][2]=f;
-    
-    matrixArray[2][0]=g;
-    matrixArray[2][1]=h;
-    matrixArray[2][2]=i;
+    matrixArray[2][0]=v1.getZ();
+    matrixArray[2][1]=v2.getZ();
+    matrixArray[2][2]=v3.getZ();
 }
-
+double Matrix3x3::getCofactor(int row,int col) const
+{
+    int row1=(row+1)%3;
+    int row2=(row+2)%3;
+    int col1=(col+1)%3;
+    int col2=(col+2)%3;
+    double a=getEntry(row1, col1);
+    double b=getEntry(row1, col2);
+    double c=getEntry(row2, col1);
+    double d=getEntry(row2, col2);
+    int sign=(row+col)%2*-2+1;
+    if (row==1) {sign*=-1;}
+    if (col==1) {sign*=-1;}
+    return sign*(a*d-b*c);
+}
 double Matrix3x3::determinant() const
 {
-    return a*e*i-a*f*h-b*d*i+b*f*g+c*d*h-c*e*g;
+    double det=0;
+    for (int i=0;i<3;i++)
+    {
+        det+=getEntry(0,i)*getCofactor(0, i);
+    }
+    return det;
 }
 
 Matrix3x3 Matrix3x3::inverse() const
 {
-    double AAA=e*i-f*h;
-    double BBB=-1*(d*i-f*g);
-    double CCC=d*h-e*g;
-    double DDD=-1*(b*i-c*h);
-    double EEE=a*i-c*g;
-    double FFF=-1*(a*h-b*g);
-    double GGG=b*f-c*e;
-    double HHH=-1*(a*f-c*d);
-    double III=a*e-b*d;
-    
-    Matrix3x3 preInverse=Matrix3x3(AAA,DDD,GGG,BBB,EEE,HHH,CCC,FFF,III);
-    
+    Matrix3x3 preInverse=Matrix3x3(getCofactor(0,0),getCofactor(1,0),getCofactor(2,0),
+                                   getCofactor(0,1),getCofactor(1,1),getCofactor(2,1),
+                                   getCofactor(0,2),getCofactor(1,2),getCofactor(2,2));
     return preInverse*(1.0/determinant());
 }
 double Matrix3x3::getEntry(int  i,int j) const
@@ -117,28 +109,46 @@ Vector Matrix3x3::getRowVector(int row) const
 }
 void Matrix3x3::printInfo() const
 {
+    /*for (int i=0;i<3;i++)
+     {
+     for (int j=0;j<3;j++)
+     {
+     std::cout << matrixArray[i][j] << " ";
+     }
+     std::cout << "\n";
+     }*/
+    std::cout << toString();
+}
+std::string Matrix3x3::toString() const
+{
+    std::string matrixString="[";
+    for (int i=0;i<3;i++)
+    {
+        matrixString+="[";
+        for (int j=0;j<3;j++)
+        {
+            matrixString+=doubleToString(matrixArray[i][j]);
+            if (j!=2) {matrixString+=",";}
+        }
+        matrixString+="]";
+        if (i!=2){matrixString+=",\n";}
+    }
+    matrixString+="]";
+    return matrixString;
+}
+Matrix3x3 Matrix3x3::operator*(const double& param) const
+{
+    double nma[3][3];
     for (int i=0;i<3;i++)
     {
         for (int j=0;j<3;j++)
         {
-            std::cout << matrixArray[i][j] << " ";
+            nma[i][j]=matrixArray[i][j]*param;
         }
-        std::cout << "\n";
     }
-}
-Matrix3x3 Matrix3x3::operator*(const double& param) const
-{
-    double aa=a*param;
-    double bb=b*param;
-    double cc=c*param;
-    double dd=d*param;
-    double ee=e*param;
-    double ff=f*param;
-    double gg=g*param;
-    double hh=h*param;
-    double ii=i*param;
-    
-    return Matrix3x3(aa,bb,cc,dd,ee,ff,gg,hh,ii);
+    return Matrix3x3(nma[0][0],nma[0][1],nma[0][2],
+                     nma[1][0],nma[1][1],nma[1][2],
+                     nma[2][0],nma[2][1],nma[2][2]);
 }
 Vector Matrix3x3::operator*(const Vector& param) const
 {

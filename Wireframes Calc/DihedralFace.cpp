@@ -41,24 +41,10 @@ void DihedralFace::addDihedral(double frameWidth)
         Point v1=getVertex(0);
         Point v2=getVertex(1);
         Point v3=getVertex(2);
-        double a=v1.getX();
-        double b=v1.getY();
-        double c=v1.getZ();
-        double d=v2.getX();
-        double e=v2.getY();
-        double f=v2.getZ();
-        double g=v3.getX();
-        double h=v3.getY();
-        double i=v3.getZ();
+        Plane facePlane=Plane::planeThroughPoints(v1, v2, v3);
+        Vector normal=facePlane.getNormalVector();
         
-        double na=b*(f-i)+e*(i-c)+h*(c-f);
-        double nb=c*(d-g)+f*(g-a)+i*(a-d);
-        double nc=a*(e-h)+d*(h-b)+g*(b-e);
-        Vector normal(na,nb,nc); //vector normal to plane of face
-        
-        //double height=sqrt(frameWidth*frameWidth-widthh*widthh);
         double height=frameWidth*sin(dihedral*M_PI/180);
-        //height*=sgn(dihedral); //make negative dihedral angle flip direction
         
         Point opoint;
         int upperOrLower;

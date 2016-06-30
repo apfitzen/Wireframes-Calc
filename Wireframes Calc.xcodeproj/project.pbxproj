@@ -66,6 +66,7 @@
 		932061A21D24B8B10072730A /* Frame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9320615F1D24B8B10072730A /* Frame.cpp */; };
 		932061A31D24B8B10072730A /* TTIntersection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932061621D24B8B10072730A /* TTIntersection.cpp */; };
 		932061A41D24B8B10072730A /* Attribute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932061681D24B8B10072730A /* Attribute.cpp */; };
+		93998EED1D25A0F30080F7D4 /* OldCode2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93998EEB1D25A0F30080F7D4 /* OldCode2.cpp */; };
 		93D07FA31D24B73F004EDB90 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93D07FA21D24B73F004EDB90 /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -200,6 +201,8 @@
 		932061671D24B8B10072730A /* Prisms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prisms.h; sourceTree = "<group>"; };
 		932061681D24B8B10072730A /* Attribute.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Attribute.cpp; sourceTree = "<group>"; };
 		932061691D24B8B10072730A /* Attribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Attribute.h; sourceTree = "<group>"; };
+		93998EEB1D25A0F30080F7D4 /* OldCode2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OldCode2.cpp; sourceTree = "<group>"; };
+		93998EEC1D25A0F30080F7D4 /* OldCode2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OldCode2.h; sourceTree = "<group>"; };
 		93D07F9F1D24B73E004EDB90 /* Wireframes Calc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Wireframes Calc"; sourceTree = BUILT_PRODUCTS_DIR; };
 		93D07FA21D24B73F004EDB90 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -361,6 +364,8 @@
 			children = (
 				932061191D24B8B00072730A /* OldCode.cpp */,
 				9320612D1D24B8B00072730A /* OldCode.h */,
+				93998EEB1D25A0F30080F7D4 /* OldCode2.cpp */,
+				93998EEC1D25A0F30080F7D4 /* OldCode2.h */,
 				9320611B1D24B8B00072730A /* OldOptimization.cpp */,
 				9320611C1D24B8B00072730A /* OldOptimization.h */,
 			);
@@ -478,6 +483,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				932061911D24B8B10072730A /* Hendecahedron.cpp in Sources */,
+				93998EED1D25A0F30080F7D4 /* OldCode2.cpp in Sources */,
 				932061991D24B8B10072730A /* FaceVertices.cpp in Sources */,
 				9320619C1D24B8B10072730A /* PenultimateTriangle.cpp in Sources */,
 				932061981D24B8B10072730A /* PovFileGenerator.cpp in Sources */,

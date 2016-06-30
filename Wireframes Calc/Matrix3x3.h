@@ -14,11 +14,11 @@
 class Matrix3x3
 {
 private:
-    double a,b,c,d,e,f,g,h,i; //individual variables for each entry make copying formulas easier
     double matrixArray[3][3]; //array fo entries makes getting a specific entry easier
     
     Vector getColumnVector(int col) const;
     Vector getRowVector(int row) const;
+    double getCofactor(int row,int col) const;
 public:
     Matrix3x3(double aa,double bb,double cc,
               double dd,double ee,double ff,
@@ -33,9 +33,9 @@ public:
     Matrix3x3 operator+(const Matrix3x3& param) const;
     double getEntry(int i,int j) const;
     void printInfo() const;
+    std::string toString() const;
     
     static Matrix3x3 zeroMatrix();
     static Matrix3x3 identityMatrix();
 };
-
 #endif /* defined(__Wireframes_Calc_4_5__Matrix3x3__) */
