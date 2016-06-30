@@ -290,47 +290,19 @@
 			name = Compounds;
 			sourceTree = "<group>";
 		};
-		932061A71D24BA750072730A /* Skeleton */ = {
+		932061A71D24BA750072730A /* Structure */ = {
 			isa = PBXGroup;
 			children = (
-				9320610E1D24B8B00072730A /* PolyhedralSkeleton.cpp */,
-				9320610F1D24B8B00072730A /* PolyhedralSkeleton.h */,
 				932061401D24B8B10072730A /* Vertex.cpp */,
 				932061411D24B8B10072730A /* Vertex.h */,
 				9320611E1D24B8B00072730A /* Edge.cpp */,
 				9320611F1D24B8B00072730A /* Edge.h */,
 				932061541D24B8B10072730A /* Face.cpp */,
 				932061551D24B8B10072730A /* Face.h */,
-				9320614A1D24B8B10072730A /* FaceGenerator.cpp */,
-				932061511D24B8B10072730A /* FaceGenerator.h */,
-				932061A81D24BAA80072730A /* FaceTypes */,
+				9320610E1D24B8B00072730A /* PolyhedralSkeleton.cpp */,
+				9320610F1D24B8B00072730A /* PolyhedralSkeleton.h */,
 			);
-			name = Skeleton;
-			sourceTree = "<group>";
-		};
-		932061A81D24BAA80072730A /* FaceTypes */ = {
-			isa = PBXGroup;
-			children = (
-				932061141D24B8B00072730A /* FramedFace.cpp */,
-				9320614D1D24B8B10072730A /* FramedFace.h */,
-				932061131D24B8B00072730A /* DihedralFace.cpp */,
-				9320614E1D24B8B10072730A /* DihedralFace.h */,
-				932061091D24B8B00072730A /* TubularPolygon.cpp */,
-				9320610A1D24B8B00072730A /* TubularPolygon.h */,
-				9320614F1D24B8B10072730A /* NonFramedFace.h */,
-				932061501D24B8B10072730A /* NonFramedFace.cpp */,
-				932061A91D24BAD40072730A /* PenultimateFaces */,
-			);
-			name = FaceTypes;
-			sourceTree = "<group>";
-		};
-		932061A91D24BAD40072730A /* PenultimateFaces */ = {
-			isa = PBXGroup;
-			children = (
-				9320614B1D24B8B10072730A /* PenultimateTriangle.cpp */,
-				932061521D24B8B10072730A /* PenultimateTriangle.h */,
-			);
-			name = PenultimateFaces;
+			name = Structure;
 			sourceTree = "<group>";
 		};
 		932061AA1D24BC060072730A /* Frame */ = {
@@ -372,6 +344,36 @@
 			name = OldCode;
 			sourceTree = "<group>";
 		};
+		93998EEF1D25A3DC0080F7D4 /* FaceGenerators */ = {
+			isa = PBXGroup;
+			children = (
+				9320614A1D24B8B10072730A /* FaceGenerator.cpp */,
+				932061511D24B8B10072730A /* FaceGenerator.h */,
+				932061141D24B8B00072730A /* FramedFace.cpp */,
+				9320614D1D24B8B10072730A /* FramedFace.h */,
+				932061131D24B8B00072730A /* DihedralFace.cpp */,
+				9320614E1D24B8B10072730A /* DihedralFace.h */,
+				932061091D24B8B00072730A /* TubularPolygon.cpp */,
+				9320610A1D24B8B00072730A /* TubularPolygon.h */,
+				9320614F1D24B8B10072730A /* NonFramedFace.h */,
+				932061501D24B8B10072730A /* NonFramedFace.cpp */,
+				9320614B1D24B8B10072730A /* PenultimateTriangle.cpp */,
+				932061521D24B8B10072730A /* PenultimateTriangle.h */,
+			);
+			name = FaceGenerators;
+			sourceTree = "<group>";
+		};
+		93998EF01D25A4340080F7D4 /* Transformations */ = {
+			isa = PBXGroup;
+			children = (
+				932061201D24B8B00072730A /* Matrix3x3.cpp */,
+				932061211D24B8B00072730A /* Matrix3x3.h */,
+				932060F91D24B8B00072730A /* AffineTransformation.cpp */,
+				932060FA1D24B8B00072730A /* AffineTransformation.h */,
+			);
+			name = Transformations;
+			sourceTree = "<group>";
+		};
 		93D07F961D24B73E004EDB90 = {
 			isa = PBXGroup;
 			children = (
@@ -394,34 +396,32 @@
 				93D07FA21D24B73F004EDB90 /* main.cpp */,
 				932060FD1D24B8B00072730A /* basicshapes.cpp */,
 				932060F81D24B8B00072730A /* basicshapes.h */,
-				932061201D24B8B00072730A /* Matrix3x3.cpp */,
-				932061211D24B8B00072730A /* Matrix3x3.h */,
-				932060F91D24B8B00072730A /* AffineTransformation.cpp */,
-				932060FA1D24B8B00072730A /* AffineTransformation.h */,
-				932061681D24B8B10072730A /* Attribute.cpp */,
-				932061691D24B8B10072730A /* Attribute.h */,
-				9320611A1D24B8B00072730A /* Compound.cpp */,
-				932061381D24B8B10072730A /* Compound.h */,
+				932061A51D24B8B70072730A /* Polyhedra */,
 				932061A61D24B9160072730A /* Compounds */,
+				93998EEF1D25A3DC0080F7D4 /* FaceGenerators */,
+				932061A71D24BA750072730A /* Structure */,
+				932061AA1D24BC060072730A /* Frame */,
+				93998EF01D25A4340080F7D4 /* Transformations */,
+				932061AB1D24BC550072730A /* Polypolyhedra */,
+				932061AC1D24BC7B0072730A /* OldCode */,
 				932060F41D24B8B00072730A /* Polyhedron.cpp */,
 				932060F51D24B8B00072730A /* Polyhedron.h */,
-				932061A71D24BA750072730A /* Skeleton */,
-				932061A51D24B8B70072730A /* Polyhedra */,
-				932061AA1D24BC060072730A /* Frame */,
-				932061561D24B8B10072730A /* VerticesManager.cpp */,
-				932061571D24B8B10072730A /* VerticesManager.h */,
-				932061481D24B8B10072730A /* FaceVertices.cpp */,
-				932060F61D24B8B00072730A /* FaceVertices.h */,
+				9320611A1D24B8B00072730A /* Compound.cpp */,
+				932061381D24B8B10072730A /* Compound.h */,
+				932061681D24B8B10072730A /* Attribute.cpp */,
+				932061691D24B8B10072730A /* Attribute.h */,
 				932061051D24B8B00072730A /* Optimization.cpp */,
 				932061061D24B8B00072730A /* Optimization.h */,
-				9320611D1D24B8B00072730A /* Utilities.cpp */,
-				932060FE1D24B8B00072730A /* Utilities.h */,
 				932061461D24B8B10072730A /* PovFileGenerator.cpp */,
 				932061421D24B8B10072730A /* PovFileGenerator.h */,
 				932061621D24B8B10072730A /* TTIntersection.cpp */,
 				932061631D24B8B10072730A /* TTIntersection.h */,
-				932061AB1D24BC550072730A /* Polypolyhedra */,
-				932061AC1D24BC7B0072730A /* OldCode */,
+				9320611D1D24B8B00072730A /* Utilities.cpp */,
+				932060FE1D24B8B00072730A /* Utilities.h */,
+				932061561D24B8B10072730A /* VerticesManager.cpp */,
+				932061571D24B8B10072730A /* VerticesManager.h */,
+				932061481D24B8B10072730A /* FaceVertices.cpp */,
+				932060F61D24B8B00072730A /* FaceVertices.h */,
 			);
 			path = "Wireframes Calc";
 			sourceTree = "<group>";

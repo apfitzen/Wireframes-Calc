@@ -38,7 +38,7 @@
 #include "AlecShape.h"
 #include "IcosahedralEdgeCompound.h"
 
-void OldCode2() //dhflsdhkfgahkljfjkahgflahjkdfghkjlafhkgaslkfhjkghjasdhlfdjkghjsdhlafdjkghjaskh
+void OldCode2()
 {
     std::vector<std::string> colors1={"Blue","Green","Red","Yellow","Orange","Violet","Cyan","Magenta","Black","Brown","CadetBlue","Aquamarine","Gray","MediumVioletRed","BlueViolet","SeaGreen","SlateBlue","MediumSlateBlue","Tan","Light_Purple"};
     std::vector<std::string> colors2={"Yellow","Green","Blue","Red","Violet","MediumVioletRed","CadetBlue","Orange","CornflowerBlue","DarkGreen","Cyan","Magenta","Aquamarine","BlueViolet","Brown","MediumSlateBlue","Tan","Light_Purple","SlateBlue","SeaGreen"};
