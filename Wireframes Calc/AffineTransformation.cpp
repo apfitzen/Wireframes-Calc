@@ -6,9 +6,11 @@
 //  Copyright (c) 2016 Aaron Pfitzenmaier. All rights reserved.
 //
 
+#include <cmath>
 #include "AffineTransformation.h"
 #include "Matrix3x3.h"
 #include "basicshapes.h"
+#include "Utilities.h"
 
 AffineTransformation::AffineTransformation():matrix(Matrix3x3::identityMatrix()),translation(Vector(0,0,0))
 {
@@ -73,7 +75,48 @@ AffineTransformation AffineTransformation::makeRotation(double xrot,double yrot,
     
     return AffineTransformation(Matrix3x3(xaxis,yaxis,zaxis));
 }
-
+AffineTransformation AffineTransformation::rotationAroundVector(const Vector& vec,double degrees)
+{
+    //https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula
+    Vector k=vec.getUnitVector();
+    Matrix3x3 kMatrix(0,-k.getZ(),k.getY(),
+                      k.getZ(),0,-k.getX(),
+                      -k.getY(),k.getX(),0);
+    Matrix3x3 twistMatrix=Matrix3x3::identityMatrix()+kMatrix*sin(radians(degrees))+kMatrix*kMatrix*(1-cos(radians(degrees)));
+    return twistMatrix;
+}
+AffineTransformation AffineTransformation::alignWithEdge(const Line& l1,double rotation,double originDist)
+{
+    Point midpoint=l1.getMidpoint();
+    Vector midpointVector=midpoint.toVector();
+    Vector zaxis=midpointVector*-1;
+    zaxis.normalize();
+    Vector xaxis=l1.getVector();
+    xaxis.normalize();
+    Vector yaxis=Vector::cross(zaxis, xaxis);
+    Matrix3x3 positioning=Matrix3x3(xaxis,yaxis,zaxis);
+    Vector translation=midpointVector.getUnitVector()*originDist;
+    AffineTransformation edgeAlignment(positioning,translation);
+    AffineTransformation twist=rotationAroundVector(zaxis, rotation);
+    edgeAlignment.compose(twist);
+    return edgeAlignment;
+}
+AffineTransformation AffineTransformation::alignWithTriangle(const Triangle& t1,double rotation,double originDist)
+{
+    Point centroid=t1.getCentroid();
+    Vector xaxis=centroid.toVector();
+    Vector zaxis(t1.getPointA(),centroid);
+    Vector yaxis=Vector::cross(zaxis, xaxis); //in this order since k cross i = j for a right handed coordinate system
+    xaxis.normalize();
+    yaxis.normalize();
+    zaxis.normalize();
+    Matrix3x3 positioning=Matrix3x3(xaxis,yaxis,zaxis);
+    Vector translation=xaxis.getUnitVector()*originDist;
+    AffineTransformation triangleAlignment(positioning,translation);
+    AffineTransformation twist=rotationAroundVector(xaxis, rotation);
+    triangleAlignment.compose(twist);
+    return triangleAlignment;
+}
 
 void AffineTransformation::printMatrix() const
 {

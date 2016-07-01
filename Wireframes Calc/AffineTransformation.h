@@ -43,6 +43,9 @@ public:
     void printMatrix() const;
     
     static AffineTransformation makeRotation(double xrot,double yrot,double zrot);
+    static AffineTransformation rotationAroundVector(const Vector& vec,double degrees);
+    static AffineTransformation alignWithEdge(const Line& l1,double rotation,double originDist);
+    static AffineTransformation alignWithTriangle(const Triangle& t1,double rotation,double originDist);
 };
 
 #endif /* defined(__Wireframes_Calc_4_5__LinearTransfomation__) */

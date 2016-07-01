@@ -18,7 +18,6 @@ class IcosahedralEdgeCompound:public Compound
 {
 public:
     IcosahedralEdgeCompound(const Polyhedron& polyhedron,double radius,double twist);
-    Matrix3x3 getEdgeBasis(const Line& l1,double twist) const;
 };
 
 #endif /* defined(__Wireframes_Calc_4_5__IcosahedralEdgeCompound__) */

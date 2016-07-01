@@ -18,6 +18,8 @@
 #include "FiveRectangles.h"
 #include "SixCompound.h"
 #include "Frame.h"
+#include "IcosahedralCompound.h"
+#include "TriangularPyramid.h"
 int main(int argc, const char * argv[]) {
     clock_t t;
     t = clock();
@@ -44,7 +46,7 @@ int main(int argc, const char * argv[]) {
     compound.printPovRayFrame(computeCompoundWidth(compound), colors1);
     std::cout << computeCompoundWidth(compound) << "\n";*/
     
-    FiveRectangles fr(0,0,0);
+    /*FiveRectangles fr(0,0,0);
     fr.setAttribute("width", 0.5986);
     fr.setAttribute("length", 2.3569);
     fr.setAttribute("twist", 3.69);
@@ -52,6 +54,13 @@ int main(int argc, const char * argv[]) {
     SixCompound compound(fr);
     double width=computeCompoundWidth(compound,sqrt(5));
     compound.printPovRayFrame(width, colors1);
+    std::cout << width << "\n";*/
+    
+    TriangularPyramid tp(0,0,0);
+    IcosahedralCompound compound(tp,-0.9439,33.62);
+    double width=computeCompoundWidth(compound);
+    compound.printPovRayFrame(width, colors1);
+    std::cout << sqrt(12)/(4.0*width) << "\n";
     std::cout << width << "\n";
     
     t = clock() - t;
